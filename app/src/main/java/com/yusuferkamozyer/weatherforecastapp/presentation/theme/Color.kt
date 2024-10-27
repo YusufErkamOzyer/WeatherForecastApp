@@ -1,4 +1,4 @@
-package com.yusuferkamozyer.weatherforecastapp.ui.theme
+package com.yusuferkamozyer.weatherforecastapp.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
