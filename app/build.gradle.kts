@@ -73,7 +73,7 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     //GPS
-
+    implementation("com.google.android.gms:play-services-location:21.1.0")
     // Retrofit
 // retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
@@ -81,8 +81,11 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
 
+    implementation ("com.google.accompanist:accompanist-permissions:0.32.0")
 
+    val nav_version = "2.8.3"
 
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 
 
 
