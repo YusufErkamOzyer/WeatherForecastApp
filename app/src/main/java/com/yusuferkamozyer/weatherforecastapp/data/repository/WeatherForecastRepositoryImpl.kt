@@ -1,5 +1,6 @@
 package com.yusuferkamozyer.weatherforecastapp.data.repository
 
+import androidx.compose.ui.graphics.ImageBitmap
 import com.yusuferkamozyer.weatherforecastapp.data.remote.OpenWeatherApi
 import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.WeatherForecastDTO
 import com.yusuferkamozyer.weatherforecastapp.domain.repository.WeatherForecastRepository

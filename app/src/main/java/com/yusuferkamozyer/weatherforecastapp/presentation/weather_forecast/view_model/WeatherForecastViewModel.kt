@@ -4,6 +4,8 @@ import android.Manifest
 import android.app.Application
 import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -33,7 +35,7 @@ import javax.inject.Inject
 class WeatherForecastViewModel @Inject constructor(
     private val getWeatherForecastUseCase: GetWeatherForecastUseCase,
     private val fusedLocationClient: FusedLocationProviderClient,
-    application: Application
+    application: Application,
 ) : AndroidViewModel(application) {
     private val _state = mutableStateOf(WeatherForecastState())
     val state: State<WeatherForecastState> = _state
@@ -41,28 +43,30 @@ class WeatherForecastViewModel @Inject constructor(
     private val _location = MutableStateFlow<Location?>(null)
     val location: StateFlow<Location?> = _location
 
+
     fun getWeatherForecast(latitude: Double, longitude: Double, exclude: String, apiKey: String) {
         getWeatherForecastUseCase(latitude, longitude, exclude, apiKey).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
                     _state.value = WeatherForecastState(isLoading = true)
-
                 }
-
                 is Resource.Success -> {
                     _state.value = WeatherForecastState(weatherForecastDTO = result.data)
                 }
-
                 is Resource.Error -> {
                     _state.value = WeatherForecastState(
-                        error =result.message ?: "An unexpected error occured"
+                        error = result.message ?: "An unexpected error occured"
                     )
                     println("hata alındı")
                 }
             }
-
         }.launchIn(viewModelScope)
     }
+
+
+
+
+
 
     fun fetchLocation() {
         val context = getApplication<Application>().applicationContext
@@ -81,7 +85,6 @@ class WeatherForecastViewModel @Inject constructor(
             _location.value = loc
         }
     }
-
 
 
 

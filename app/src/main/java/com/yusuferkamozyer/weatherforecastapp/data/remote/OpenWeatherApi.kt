@@ -12,5 +12,5 @@ interface OpenWeatherApi {
         @Query("lon") longitude: Double,
         @Query("exclude") exclude: String,
         @Query("appid") apiKey: String
-    ):WeatherForecastDTO
+    ): WeatherForecastDTO
 }

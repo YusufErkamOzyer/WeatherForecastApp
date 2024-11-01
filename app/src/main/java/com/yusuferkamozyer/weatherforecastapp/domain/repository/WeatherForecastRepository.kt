@@ -10,4 +10,5 @@ interface WeatherForecastRepository {
         apiKey: String,
     ): WeatherForecastDTO
 
+
 }

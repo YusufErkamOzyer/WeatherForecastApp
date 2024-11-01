@@ -1,62 +1,96 @@
 package com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view
 
-import android.Manifest
-import android.app.Activity
-import android.content.Context
-import android.content.pm.PackageManager
-import android.location.Location
-import android.os.Looper
+import android.graphics.BitmapFactory
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
+import coil3.compose.AsyncImage
+import com.yusuferkamozyer.weatherforecastapp.R
 import com.yusuferkamozyer.weatherforecastapp.common.Constants
+import com.yusuferkamozyer.weatherforecastapp.common.Utils
+import com.yusuferkamozyer.weatherforecastapp.domain.model.HourlyWeatherModel
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view_model.WeatherForecastViewModel
 
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun WeatherForecastScreen(
-    viewModel: WeatherForecastViewModel = hiltViewModel()
+    viewModel: WeatherForecastViewModel = hiltViewModel(),
 ) {
 
     val location by viewModel.location.collectAsState()
-    LaunchedEffect  (Unit){
+    LaunchedEffect(Unit) {
         viewModel.fetchLocation()
+
     }
-    val exclude = "daily"
     val api_key = Constants.api_key
     LaunchedEffect(location) {
         location?.let {
-            viewModel.getWeatherForecast(it.latitude, it.longitude, exclude, api_key)
+            viewModel.getWeatherForecast(it.latitude, it.longitude, "", api_key)
         } ?: println("Konum bilgisi henüz alınmadı")
-
     }
+
 
     val state = viewModel.state.value
-    state.weatherForecastDTO?.let {
-        println(it.current.weather[0].description)
+    state.weatherForecastDTO?.let { dailyState ->
+            WeatherForecastScreenView(dailyState)
+            /*val hourlyWeatherModelArrayList = arrayListOf<HourlyWeatherModel>()
+            for (i in hourlyState.hourly) {
+                hourlyWeatherModelArrayList.add(
+                    HourlyWeatherModel(
+                        i.temp,
+                        Utils.urlCreator(i.weather[0].icon),
+                        i.dt,
+                        i.wind_speed,
+                        i.weather[0].description
+                    )
+                )
+            }
+            HourlyWeatherMenuList(hourlyWeatherModelArrayList)*/
     }
-    if (state.error.isNotBlank()) {
+
+
+    if (state.error.isNotBlank() ) {
         println(state.error)
     }
     if (state.isLoading) {
-        println("Yükleniyor")
+        CircularProgressIndicator(
+            modifier = Modifier.width(64.dp),
+            color = MaterialTheme.colorScheme.secondary,
+            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+        )
     }
-
-
-
 }
+
+
+
+
 
 

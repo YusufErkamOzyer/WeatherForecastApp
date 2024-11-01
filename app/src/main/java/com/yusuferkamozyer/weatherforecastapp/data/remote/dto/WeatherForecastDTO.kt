@@ -1,13 +1,13 @@
 package com.yusuferkamozyer.weatherforecastapp.data.remote.dto
 
 data class WeatherForecastDTO(
-    val alerts: List<Any>,
+    val alerts: List<Alert>,
     val current: Current,
-    val daily: List<Any>,
-    val hourly: List<Any>,
+    val daily: List<Daily>,
+    val hourly: List<Hourly>,
     val lat: Double,
     val lon: Double,
-    val minutely: List<Any>,
+    val minutely: List<Minutely>,
     val timezone: String,
     val timezone_offset: Int
 )
