@@ -2,6 +2,8 @@ package com.yusuferkamozyer.weatherforecastapp.domain.use_case
 
 import com.yusuferkamozyer.weatherforecastapp.common.Resource
 import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.WeatherForecastDTO
+import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.toWeatherForecastModel
+import com.yusuferkamozyer.weatherforecastapp.domain.model.WeatherForecastModel
 import com.yusuferkamozyer.weatherforecastapp.domain.repository.WeatherForecastRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -10,11 +12,11 @@ import java.io.IOException
 import javax.inject.Inject
 
 class GetWeatherForecastUseCase @Inject constructor(private val repository: WeatherForecastRepository) {
-    operator fun invoke(latitude: Double, longitude: Double, exclude: String, apiKey: String): Flow<Resource<WeatherForecastDTO>> =flow{
+    operator fun invoke(latitude: Double, longitude: Double, exclude: String, apiKey: String): Flow<Resource<WeatherForecastModel>> =flow{
         try {
             emit(Resource.Loading())
             val response=repository.getWeatherForecast(latitude, longitude, exclude, apiKey)
-            emit(Resource.Success(response))
+            emit(Resource.Success(response.toWeatherForecastModel()))
         }catch(e: HttpException) {
             emit(Resource.Error(e.localizedMessage))
         } catch(e: IOException) {

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
@@ -25,9 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yusuferkamozyer.weatherforecastapp.common.Constants
 import com.yusuferkamozyer.weatherforecastapp.common.Utils
-import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.WeatherForecastDTO
-import com.yusuferkamozyer.weatherforecastapp.domain.model.DailyWeatherModel
-import com.yusuferkamozyer.weatherforecastapp.domain.model.HourlyWeatherModel
+
+import com.yusuferkamozyer.weatherforecastapp.domain.model.WeatherForecastModel
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view.lazy_list.DailyWeatherMenuList
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view.lazy_list.HourlyWeatherMenuList
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view.lazy_list.toDailyWeatherModel
@@ -35,45 +35,60 @@ import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view
 
 
 @RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
-fun WeatherForecastScreenView(weatherForecastDTO: WeatherForecastDTO) {
-    Column(
+fun WeatherForecastScreenView(weatherForecastModel: WeatherForecastModel) {
+    LazyColumn(
         modifier = Modifier
             .padding(20.dp)
             .padding(top = 40.dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(imageVector = Icons.Default.Add,
-                contentDescription = "Add Something",
-                modifier = Modifier
-                    .size(40.dp)
-                    .clickable {
-                        println("Clicked")
-                    })
-            Text(weatherForecastDTO.timezone)
-            SettingsMenu()
+        //ToolBar
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(imageVector = Icons.Default.Add,
+                    contentDescription = "Add Something",
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable {
+                            println("Clicked")
+                        })
+                Text(weatherForecastModel.timezone)
+                SettingsMenu()
+            }
+            Spacer(Modifier.height(50.dp))
+
+            DisplayTemperature(
+                weatherForecastModel.current.temp,
+                weatherForecastModel.current.weather[0].main
+            )
         }
-        Spacer(Modifier.height(50.dp))
-        DisplayTemperature(
-            weatherForecastDTO.current.temp,
-            weatherForecastDTO.current.weather[0].main
-        )
-        val hourlyArrayList= arrayListOf<HourlyWeatherModel>()
-        val dailyArrayList= arrayListOf<DailyWeatherModel>()
-        weatherForecastDTO.hourly.forEach {
-            hourlyArrayList.add(it.toHourlyWeatherMenu())
+        item {
+            val hourlyList = weatherForecastModel.hourly.map { it.toHourlyWeatherMenu() }
+            HourlyWeatherMenuList(hourlyList)
+        }
+        item {
+            val dailyList = weatherForecastModel.daily.map { it.toDailyWeatherModel() }
+            DailyWeatherMenuList(dailyList)
         }
 
-        weatherForecastDTO.daily.forEach {
-            dailyArrayList.add(it.toDailyWeatherModel())
+        item {
+            val today = weatherForecastModel.daily[0]
+            TodayWeatherForecastView(
+                description = today.summary,
+                humidity = today.humidity,
+                feelsLikeDay = today.feels_like.day,
+                uvi = today.uvi,
+                pressure = today.pressure,
+                clouds = today.clouds,
+                sunset = Utils.formatUtcToTimeString(today.sunset),
+                sunrise = Utils.formatUtcToTimeString(today.sunrise)
+            )
         }
-        HourlyWeatherMenuList(hourlyArrayList.toList())
-        DailyWeatherMenuList(dailyArrayList.toList())
-
     }
 }
 
@@ -87,7 +102,7 @@ fun DisplayTemperature(temp: Double, description: String) {
         Row {
             Text(
                 celsius,
-                color = Color.Cyan,
+                color = Color.White,
                 fontSize = 120.sp,
                 fontFamily = Constants.fontFamily,
                 style = MaterialTheme.typography.headlineLarge
@@ -96,7 +111,7 @@ fun DisplayTemperature(temp: Double, description: String) {
             Text(
                 "°C",
                 modifier = Modifier.padding(top = 15.dp),
-                color = Color.Cyan,
+                color = Color.White,
                 fontSize = 50.sp,
                 fontFamily = Constants.fontFamily,
                 style = MaterialTheme.typography.titleLarge
@@ -105,7 +120,7 @@ fun DisplayTemperature(temp: Double, description: String) {
         Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = description,
-            color = Color.Cyan,
+            color = Color.White,
             fontSize = 45.sp,
             fontFamily = Constants.fontFamily
         )

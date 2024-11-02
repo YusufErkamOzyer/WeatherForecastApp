@@ -51,7 +51,7 @@ class WeatherForecastViewModel @Inject constructor(
                     _state.value = WeatherForecastState(isLoading = true)
                 }
                 is Resource.Success -> {
-                    _state.value = WeatherForecastState(weatherForecastDTO = result.data)
+                    _state.value = WeatherForecastState(weatherForecastModel = result.data)
                 }
                 is Resource.Error -> {
                     _state.value = WeatherForecastState(

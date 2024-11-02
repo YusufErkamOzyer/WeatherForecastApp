@@ -15,10 +15,10 @@ object Utils {
         return String.format("%.1f", celsius)
     }
     fun urlCreator(iconId:String):String="https://openweathermap.org/img/wn/${iconId}@2x.png"
-    fun formatUtcToTimeString(utcMillis: Long): String {
-        val dateFormat = SimpleDateFormat("HH:mm")
-        dateFormat.timeZone = TimeZone.getTimeZone("UTC") // Zaman dilimini UTC olarak ayarlayın
-        return dateFormat.format(Date(utcMillis*1000))
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun formatUtcToTimeString(unixTime: Long): String {
+        val formatter = DateTimeFormatter.ofPattern("HH:mm").withZone(ZoneId.of("UTC"))
+        return formatter.format(Instant.ofEpochSecond(unixTime))
     }
     @RequiresApi(Build.VERSION_CODES.O)
     fun getDayFromUtcMillis(utcMillis: Long): String {
