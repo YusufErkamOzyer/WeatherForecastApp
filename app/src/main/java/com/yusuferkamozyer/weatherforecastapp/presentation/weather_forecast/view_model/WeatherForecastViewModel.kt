@@ -62,12 +62,6 @@ class WeatherForecastViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-
-
-
-
-
-
     fun fetchLocation() {
         val context = getApplication<Application>().applicationContext
         if (ActivityCompat.checkSelfPermission(

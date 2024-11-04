@@ -8,11 +8,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view.WeatherForecastScreen
+import com.yusuferkamozyer.weatherforecastapp.presentation.week_weather_forecast.view.WeekWeatherForecastScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,11 +35,22 @@ class MainActivity : ComponentActivity() {
                         RequestLocationPermissionScreen(navController)
                     }
                     composable(route = Screen.WeatherForecastScreen.route) {
-                        WeatherForecastScreen()
+                        WeatherForecastScreen(navController = navController)
+                    }
+                    composable(route="${Screen.WeekWeatherForecastScreen.route}/{lat}/{lon}",
+                        arguments = listOf(
+                            navArgument("lat"){type= NavType.StringType},
+                            navArgument("lon"){type=NavType.StringType}
+                        )
+                    ){ backStackEntry ->
+                        val latString = backStackEntry.arguments?.getString("lat") ?: "0.0"
+                        val lonString = backStackEntry.arguments?.getString("lon") ?: "0.0"
+                        val lat = latString.toDouble()
+                        val lon = lonString.toDouble()
+                        WeekWeatherForecastScreen(navController = navController, lat = lat, lon = lon)
                     }
                 }
             }
         }
     }
-
 }

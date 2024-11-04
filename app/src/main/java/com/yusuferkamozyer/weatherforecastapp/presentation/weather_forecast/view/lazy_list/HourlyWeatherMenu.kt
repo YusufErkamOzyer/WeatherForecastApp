@@ -2,6 +2,8 @@ package com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.vie
 
 import android.content.res.Resources.Theme
 import android.graphics.ColorMatrix
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,6 +32,7 @@ import com.yusuferkamozyer.weatherforecastapp.domain.model.HourlyWeatherModel
 import com.yusuferkamozyer.weatherforecastapp.presentation.theme.AppColors
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HourlyWeatherMenuList(hourlyWeatherModelList: List<HourlyWeatherModel>) {
     Card(
@@ -63,6 +66,7 @@ fun Hourly.toHourlyWeatherMenu(): HourlyWeatherModel {
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HourlyWeatherMenuItem(hourlyWeatherModel: HourlyWeatherModel) {
     Column(
