@@ -43,7 +43,10 @@ fun WeekWeatherForecastScreen(
 
         val state = viewModel.state.value
         state.weatherForecastModel?.let { weatherForecastModel ->
-            DailyWeatherForecastScreenView(weatherForecastModel = weatherForecastModel)
+            DailyWeatherForecastScreenView(
+                weatherForecastModel = weatherForecastModel,
+                navController = navController
+            )
         }
         if (state.error.isNotBlank()) {
             println(state.error)

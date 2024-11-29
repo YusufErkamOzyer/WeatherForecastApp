@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.protobuf") version "0.9.4"
 }
 
 android {
@@ -93,6 +94,7 @@ dependencies {
 
     implementation("androidx.compose.ui:ui-text-google-fonts:1.7.3")
 
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 
 
 
@@ -109,3 +111,4 @@ dependencies {
 kapt {
     correctErrorTypes = true
 }
+

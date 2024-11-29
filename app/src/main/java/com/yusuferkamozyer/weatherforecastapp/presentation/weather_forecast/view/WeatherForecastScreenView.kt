@@ -2,7 +2,6 @@ package com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.vie
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,39 +11,43 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarColors
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.yusuferkamozyer.weatherforecastapp.common.Constants
 import com.yusuferkamozyer.weatherforecastapp.common.Utils
-import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.Temp
+import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.openweatherdto.Temp
 
 import com.yusuferkamozyer.weatherforecastapp.domain.model.WeatherForecastModel
+import com.yusuferkamozyer.weatherforecastapp.presentation.Screen
 import com.yusuferkamozyer.weatherforecastapp.presentation.theme.AppColors
+import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.LocationInformationState
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view.lazy_list.DailyWeatherMenuList
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view.lazy_list.HourlyWeatherMenuList
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view.lazy_list.toDailyWeatherModel
@@ -58,16 +61,22 @@ fun WeatherForecastScreenView(
     weatherForecastModel: WeatherForecastModel,
     lazyListState: LazyListState,
     navController: NavController,
+    locationInformationState: LocationInformationState
 ) {
+    var showDialog by remember { mutableStateOf(false) }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(text = weatherForecastModel.timezone)
+                    if (locationInformationState.localInformationModel!!.cityDistrict!="Unknown District"){
+                        Text(text = "${locationInformationState.localInformationModel.city}/${locationInformationState.localInformationModel.cityDistrict}")
+                    }else{
+                        Text(text=locationInformationState.localInformationModel.city)
+                    }
                 },
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { showDialog=true }) {
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = "Add Location"
@@ -75,7 +84,7 @@ fun WeatherForecastScreenView(
                     }
                 },
                 actions = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {navController.navigate(Screen.SettingsScreen.route)}) {
                         Icon(
                             imageVector = Icons.Default.Menu,
                             contentDescription = "Go Settings"
@@ -92,9 +101,8 @@ fun WeatherForecastScreenView(
             )
         },
         containerColor = AppColors.inversePrimaryLightMediumContrast
-
-
     ) { values ->
+
         LazyColumn(
             state = lazyListState,
             contentPadding = PaddingValues(20.dp),
@@ -138,8 +146,74 @@ fun WeatherForecastScreenView(
                 )
             }
         }
+        if (showDialog) {
+            LocationAlertDialog(onDismiss = { showDialog = false })
+        }
     }
 
+}
+
+@Composable
+fun LocationAlertDialog(onDismiss: () -> Unit) {
+    val openAlertDialog = remember { mutableStateOf(false) }
+
+    // ...
+    when {
+        // ...
+        openAlertDialog.value -> {
+            AlertDialogExample(
+                onDismissRequest = { openAlertDialog.value = false },
+                onConfirmation = {
+                    openAlertDialog.value = false
+                    println("Confirmation registered") // Add logic here to handle confirmation.
+                },
+                dialogTitle = "Alert dialog example",
+                dialogText = "This is an example of an alert dialog with buttons.",
+                icon = Icons.Default.Info
+            )
+        }
+    }
+}
+@Composable
+fun AlertDialogExample(
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit,
+    dialogTitle: String,
+    dialogText: String,
+    icon: ImageVector,
+) {
+    AlertDialog(
+        icon = {
+            Icon(icon, contentDescription = "Example Icon")
+        },
+        title = {
+            Text(text = dialogTitle)
+        },
+        text = {
+            Text(text = dialogText)
+        },
+        onDismissRequest = {
+            onDismissRequest()
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onConfirmation()
+                }
+            ) {
+                Text("Confirm")
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    onDismissRequest()
+                }
+            ) {
+                Text("Dismiss")
+            }
+        }
+    )
 }
 
 @Composable
@@ -184,7 +258,3 @@ fun DisplayTemperature(temp: Double, description: String, tempHighLow: Temp) {
         )
     }
 }
-
-
-
-

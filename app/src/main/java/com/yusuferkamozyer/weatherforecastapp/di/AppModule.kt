@@ -7,8 +7,10 @@ import com.google.android.gms.location.LocationServices
 import com.yusuferkamozyer.weatherforecastapp.common.Constants
 import com.yusuferkamozyer.weatherforecastapp.data.local.DefaultLocationTracker
 import com.yusuferkamozyer.weatherforecastapp.data.local.LocationTracker
+import com.yusuferkamozyer.weatherforecastapp.data.remote.OpenCageGeocodingApi
 import com.yusuferkamozyer.weatherforecastapp.data.remote.OpenWeatherApi
 import com.yusuferkamozyer.weatherforecastapp.data.repository.WeatherForecastRepositoryImpl
+import com.yusuferkamozyer.weatherforecastapp.domain.repository.SettingsRepository
 import com.yusuferkamozyer.weatherforecastapp.domain.repository.WeatherForecastRepository
 import dagger.Module
 import dagger.Provides
@@ -30,15 +32,25 @@ class AppModule {
             .create(OpenWeatherApi::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideGeocodingApi():OpenCageGeocodingApi{
+        return Retrofit.Builder().baseUrl(Constants.BASE_LOCAL_URL)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(OpenCageGeocodingApi::class.java)
+    }
+
     @Singleton
     @Provides
-    fun provideWeatherForecastRepository(api:OpenWeatherApi):WeatherForecastRepository{
-        return WeatherForecastRepositoryImpl(api)
+    fun provideWeatherForecastRepository(api: OpenWeatherApi,api_geo:OpenCageGeocodingApi): WeatherForecastRepository {
+        return WeatherForecastRepositoryImpl(api,api_geo)
     }
+
+
     @Provides
     @Singleton
     fun providesFusedLocationProviderClient(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
 
@@ -46,7 +58,7 @@ class AppModule {
     @Singleton
     fun providesLocationTracker(
         fusedLocationProviderClient: FusedLocationProviderClient,
-        application: Application
+        application: Application,
     ): LocationTracker = DefaultLocationTracker(
         fusedLocationProviderClient = fusedLocationProviderClient,
         application = application

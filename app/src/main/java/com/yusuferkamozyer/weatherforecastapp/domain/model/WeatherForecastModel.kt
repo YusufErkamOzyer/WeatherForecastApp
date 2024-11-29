@@ -1,9 +1,9 @@
 package com.yusuferkamozyer.weatherforecastapp.domain.model
 
-import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.Current
-import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.Daily
-import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.Hourly
-import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.Minutely
+import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.openweatherdto.Current
+import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.openweatherdto.Daily
+import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.openweatherdto.Hourly
+import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.openweatherdto.Minutely
 
 data class WeatherForecastModel(
     val current: Current,

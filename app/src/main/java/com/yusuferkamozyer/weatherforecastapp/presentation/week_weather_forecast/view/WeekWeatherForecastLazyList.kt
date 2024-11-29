@@ -4,9 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -21,13 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.yusuferkamozyer.weatherforecastapp.R
 import com.yusuferkamozyer.weatherforecastapp.common.Constants
 import com.yusuferkamozyer.weatherforecastapp.common.Utils
-import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.Daily
-import com.yusuferkamozyer.weatherforecastapp.domain.model.WeatherForecastModel
+import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.openweatherdto.Daily
 import com.yusuferkamozyer.weatherforecastapp.domain.model.WeekWeatherModel
 import com.yusuferkamozyer.weatherforecastapp.presentation.theme.AppColors
 
@@ -45,6 +40,7 @@ fun WeekWeatherForecastLazyList(
         LazyRow {
             items(weekWeatherModelList) { item ->
                 WeekWeatherForecastLazyListItem(item, modifier = Modifier.padding(5.dp))
+
             }
         }
     }
@@ -94,12 +90,6 @@ fun WeekWeatherForecastLazyListItem(
         )
         Text(
             text = Utils.kelvinToCelsius(weekWeatherModel.tempNight)+"°C",
-            color = Color.White,
-            fontFamily = Constants.fontFamily,
-            modifier = modifier
-        )
-        Text(
-            text = weekWeatherModel.moonPhase,
             color = Color.White,
             fontFamily = Constants.fontFamily,
             modifier = modifier

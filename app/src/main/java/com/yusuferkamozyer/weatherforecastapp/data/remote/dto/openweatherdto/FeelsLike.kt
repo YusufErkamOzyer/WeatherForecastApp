@@ -1,4 +1,4 @@
-package com.yusuferkamozyer.weatherforecastapp.data.remote.dto
+package com.yusuferkamozyer.weatherforecastapp.data.remote.dto.openweatherdto
 
 data class FeelsLike(
     val day: Double,

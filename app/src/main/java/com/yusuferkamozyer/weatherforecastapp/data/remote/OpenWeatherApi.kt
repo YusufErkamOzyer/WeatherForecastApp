@@ -1,6 +1,6 @@
 package com.yusuferkamozyer.weatherforecastapp.data.remote
 
-import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.WeatherForecastDTO
+import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.openweatherdto.WeatherForecastDTO
 import retrofit2.http.GET
 import retrofit2.http.Query
 

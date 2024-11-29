@@ -27,7 +27,7 @@ import coil3.compose.AsyncImage
 import com.yusuferkamozyer.weatherforecastapp.R
 import com.yusuferkamozyer.weatherforecastapp.common.Constants
 import com.yusuferkamozyer.weatherforecastapp.common.Utils
-import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.Daily
+import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.openweatherdto.Daily
 import com.yusuferkamozyer.weatherforecastapp.domain.model.DailyWeatherModel
 import com.yusuferkamozyer.weatherforecastapp.presentation.Screen
 import com.yusuferkamozyer.weatherforecastapp.presentation.theme.AppColors

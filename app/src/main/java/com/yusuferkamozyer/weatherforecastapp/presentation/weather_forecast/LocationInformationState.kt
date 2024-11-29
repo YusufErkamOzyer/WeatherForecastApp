@@ -1,9 +1,10 @@
 package com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast
 
+import com.yusuferkamozyer.weatherforecastapp.domain.model.LocalInformationModel
 import com.yusuferkamozyer.weatherforecastapp.domain.model.WeatherForecastModel
 
-data class WeatherForecastState (
+data class LocationInformationState (
     val isLoading:Boolean=false,
-    val weatherForecastModel: WeatherForecastModel?=null,
+    val localInformationModel: LocalInformationModel?=null,
     val error: String = ""
 )

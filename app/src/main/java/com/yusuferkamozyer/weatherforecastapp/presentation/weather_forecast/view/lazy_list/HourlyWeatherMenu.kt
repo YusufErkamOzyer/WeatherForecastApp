@@ -1,7 +1,5 @@
 package com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view.lazy_list
 
-import android.content.res.Resources.Theme
-import android.graphics.ColorMatrix
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +25,7 @@ import coil3.compose.AsyncImage
 import com.yusuferkamozyer.weatherforecastapp.R
 import com.yusuferkamozyer.weatherforecastapp.common.Constants
 import com.yusuferkamozyer.weatherforecastapp.common.Utils
-import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.Hourly
+import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.openweatherdto.Hourly
 import com.yusuferkamozyer.weatherforecastapp.domain.model.HourlyWeatherModel
 import com.yusuferkamozyer.weatherforecastapp.presentation.theme.AppColors
 

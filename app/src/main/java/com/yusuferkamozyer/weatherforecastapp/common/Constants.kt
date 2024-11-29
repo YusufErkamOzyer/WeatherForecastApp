@@ -8,6 +8,8 @@ import com.yusuferkamozyer.weatherforecastapp.R
 object Constants {
     const val api_key="2cac052e5fa8bf383bae4c6822477750"
     const val BASE_URL ="https://api.openweathermap.org/"
+    const val BASE_LOCAL_URL="https://api.opencagedata.com/"
+    const val api_local_key="65ded17bf9f842128f699befb3464d67"
 
 
     val fontFamily= FontFamily(
@@ -20,4 +22,7 @@ object Constants {
         Font(R.font.lexend_regular,FontWeight.Normal),
         Font(R.font.lexend_extralight,FontWeight.ExtraLight)
     )
+
+    const val weatherForecastScreen="WeatherForecastScreen"
+    const val weeklyWeatherForecastScreen="WeeklyWeatherForecast"
 }

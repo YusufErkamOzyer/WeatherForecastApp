@@ -1,4 +1,4 @@
-package com.yusuferkamozyer.weatherforecastapp.data.remote.dto
+package com.yusuferkamozyer.weatherforecastapp.data.remote.dto.openweatherdto
 
 import com.yusuferkamozyer.weatherforecastapp.domain.model.WeatherForecastModel
 

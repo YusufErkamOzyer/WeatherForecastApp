@@ -1,8 +1,7 @@
 package com.yusuferkamozyer.weatherforecastapp.domain.use_case
 
 import com.yusuferkamozyer.weatherforecastapp.common.Resource
-import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.WeatherForecastDTO
-import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.toWeatherForecastModel
+import com.yusuferkamozyer.weatherforecastapp.data.remote.dto.openweatherdto.toWeatherForecastModel
 import com.yusuferkamozyer.weatherforecastapp.domain.model.WeatherForecastModel
 import com.yusuferkamozyer.weatherforecastapp.domain.repository.WeatherForecastRepository
 import kotlinx.coroutines.flow.Flow
@@ -25,5 +24,4 @@ class GetWeatherForecastUseCase @Inject constructor(private val repository: Weat
             emit(Resource.Error(e.localizedMessage?: "An unexpected error occured"))
         }
     }
-
 }

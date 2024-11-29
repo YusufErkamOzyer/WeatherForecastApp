@@ -17,8 +17,11 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.yusuferkamozyer.weatherforecastapp.common.Resource
 import com.yusuferkamozyer.weatherforecastapp.data.local.LocationTracker
+import com.yusuferkamozyer.weatherforecastapp.domain.model.LocalInformationModel
 import com.yusuferkamozyer.weatherforecastapp.domain.model.LocationState
+import com.yusuferkamozyer.weatherforecastapp.domain.use_case.GetLocalInformationUseCase
 import com.yusuferkamozyer.weatherforecastapp.domain.use_case.GetWeatherForecastUseCase
+import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.LocationInformationState
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.WeatherForecastState
 import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,6 +38,7 @@ import javax.inject.Inject
 class WeatherForecastViewModel @Inject constructor(
     private val getWeatherForecastUseCase: GetWeatherForecastUseCase,
     private val fusedLocationClient: FusedLocationProviderClient,
+    private val getLocalInformationUseCase: GetLocalInformationUseCase,
     application: Application,
 ) : AndroidViewModel(application) {
     private val _state = mutableStateOf(WeatherForecastState())
@@ -42,6 +46,26 @@ class WeatherForecastViewModel @Inject constructor(
 
     private val _location = MutableStateFlow<Location?>(null)
     val location: StateFlow<Location?> = _location
+
+    private val _locationInfo= mutableStateOf(LocationInformationState())
+    val locationInfo:State<LocationInformationState> =_locationInfo
+
+
+    fun getLocationInformation(latlon:String){
+        getLocalInformationUseCase(latlon).onEach { result->
+            when(result){
+                is Resource.Loading->{
+                    _locationInfo.value=LocationInformationState(isLoading = true)
+                }
+                is Resource.Success->{
+                    _locationInfo.value=LocationInformationState(localInformationModel =result.data )
+                }
+                is Resource.Error->{
+                    _locationInfo.value= LocationInformationState(error = result.message?:"An unexpected error occured")
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
 
 
     fun getWeatherForecast(latitude: Double, longitude: Double, exclude: String, apiKey: String) {

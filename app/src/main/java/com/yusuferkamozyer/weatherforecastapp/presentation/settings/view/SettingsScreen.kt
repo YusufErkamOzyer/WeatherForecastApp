@@ -1,80 +1,68 @@
-package com.yusuferkamozyer.weatherforecastapp.presentation.week_weather_forecast.view
+package com.yusuferkamozyer.weatherforecastapp.presentation.settings.view
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.yusuferkamozyer.weatherforecastapp.common.Constants
-import com.yusuferkamozyer.weatherforecastapp.domain.model.WeatherForecastModel
-import com.yusuferkamozyer.weatherforecastapp.domain.model.WeekWeatherModel
-import com.yusuferkamozyer.weatherforecastapp.presentation.Screen
+import com.yusuferkamozyer.weatherforecastapp.domain.model.SettingsState
+import com.yusuferkamozyer.weatherforecastapp.presentation.settings.SettingsViewModel
 import com.yusuferkamozyer.weatherforecastapp.presentation.theme.AppColors
+import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view_model.WeatherForecastViewModel
+import javax.annotation.meta.When
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun DailyWeatherForecastScreenView(
-    modifier: Modifier = Modifier,
-    weatherForecastModel: WeatherForecastModel,
-    navController: NavController
+fun SettingsScreen(
+    viewModel: SettingsViewModel = hiltViewModel(),
+    navController: NavController,
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            MediumTopAppBar(
+            TopAppBar(
                 title = {
                     Column(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = weatherForecastModel.timezone,
+                            text = "Settings",
                             color = Color.White,
                             fontFamily = Constants.fontFamily
                         )
-                        Text(
-                            text = "Weather Forecasts for 7 Days",
-                            color = Color.White,
-                            fontFamily = Constants.fontFamily
-                        )
+
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick = {navController.popBackStack()}) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Return to Previous Page"
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = {navController.navigate(Screen.SettingsScreen.route)}) {
-                        Icon(
-                            imageVector = Icons.Default.Menu,
-                            contentDescription = "Go Settings"
                         )
                     }
                 },
@@ -89,18 +77,17 @@ fun DailyWeatherForecastScreenView(
         },
         containerColor = AppColors.inversePrimaryLightMediumContrast
     ) { value ->
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(value),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
-            val weekList = weatherForecastModel.daily.map { it.toWeekWeatherModel() }
-            WeekWeatherForecastLazyList(weekList)
-        }
+        Column(modifier = Modifier.padding(value)) {
 
+        }
     }
+
+
+    /*val state=viewModel.settingsState.value
+    viewModel.updateTemperatureUnit(true)
+    LaunchedEffect (state){
+        println(state.isCelsius)
+    }*/
 
 
 }

@@ -16,8 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavController
 import com.yusuferkamozyer.weatherforecastapp.domain.model.WeatherForecastModel
+import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.LocationInformationState
 
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view.WeatherForecastScreenView
+
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,14 +29,20 @@ fun PullToRefreshWeatherColumn(
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
-    navController: NavController
+    navController: NavController,
+    locationInformationState: LocationInformationState,
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
     Box(
         modifier = modifier
             .nestedScroll(pullToRefreshState.nestedScrollConnection)
     ) {
-        WeatherForecastScreenView(weatherForecastModel,lazyListState,navController)
+        WeatherForecastScreenView(
+            weatherForecastModel,
+            lazyListState,
+            navController,
+            locationInformationState
+        )
         if (pullToRefreshState.isRefreshing) {
             LaunchedEffect(true) {
                 onRefresh()

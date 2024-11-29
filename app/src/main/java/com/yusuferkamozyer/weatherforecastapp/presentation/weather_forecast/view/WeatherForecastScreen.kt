@@ -68,27 +68,36 @@ fun WeatherForecastScreen(
         LaunchedEffect(location) {
             location?.let {
                 viewModel.getWeatherForecast(it.latitude, it.longitude, "", api_key)
+                viewModel.getLocationInformation("${it.latitude},${it.longitude}")
+
             } ?: println("Konum bilgisi henüz alınmadı")
         }
         val state = viewModel.state.value
+        val locationInfo=viewModel.locationInfo.value
         var isRefreshing by remember { mutableStateOf(false) }
         val onRefresh = {
             isRefreshing = true
             location?.let {
                 viewModel.getWeatherForecast(it.latitude, it.longitude, "", api_key)
+                viewModel.getLocationInformation("${it.latitude},${it.longitude}")
             }
             isRefreshing = false
         }
         state.weatherForecastModel?.let { weatherForecastModel ->
-            PullToRefreshWeatherColumn(
-                weatherForecastModel = weatherForecastModel,
-                isRefreshing = isRefreshing,
-                onRefresh = onRefresh,
-                modifier = Modifier.fillMaxSize(),
-                navController = navController
-            )
+            locationInfo.localInformationModel?.let {
+                PullToRefreshWeatherColumn(
+                    weatherForecastModel = weatherForecastModel,
+                    isRefreshing = isRefreshing,
+                    onRefresh = onRefresh,
+                    modifier = Modifier.fillMaxSize(),
+                    navController = navController,
+                    locationInformationState = locationInfo
+                )
+            }
         }
-
+        if (locationInfo.error.isNotBlank()){
+            println(locationInfo.error)
+        }
         if (state.error.isNotBlank()) {
             println(state.error)
         }
@@ -107,7 +116,6 @@ fun WeatherForecastScreen(
             }
         }
     }
-
 }
 
 
