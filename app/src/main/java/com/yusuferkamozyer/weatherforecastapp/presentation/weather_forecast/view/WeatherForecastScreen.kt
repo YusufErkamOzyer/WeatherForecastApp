@@ -37,7 +37,6 @@ import com.yusuferkamozyer.weatherforecastapp.common.Constants
 
 import com.yusuferkamozyer.weatherforecastapp.presentation.Screen
 import com.yusuferkamozyer.weatherforecastapp.presentation.theme.AppColors
-import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view.components.EditableDialog
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.view_model.WeatherForecastViewModel
 
 
