@@ -4,34 +4,22 @@ import android.Manifest
 import android.app.Application
 import android.content.pm.PackageManager
 import android.location.Location
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.yusuferkamozyer.weatherforecastapp.common.Resource
-import com.yusuferkamozyer.weatherforecastapp.data.local.LocationTracker
-import com.yusuferkamozyer.weatherforecastapp.domain.model.LocalInformationModel
-import com.yusuferkamozyer.weatherforecastapp.domain.model.LocationState
 import com.yusuferkamozyer.weatherforecastapp.domain.use_case.GetLocalInformationUseCase
 import com.yusuferkamozyer.weatherforecastapp.domain.use_case.GetWeatherForecastUseCase
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.LocationInformationState
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.WeatherForecastState
-import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,26 +35,30 @@ class WeatherForecastViewModel @Inject constructor(
     private val _location = MutableStateFlow<Location?>(null)
     val location: StateFlow<Location?> = _location
 
-    private val _locationInfo= mutableStateOf(LocationInformationState())
-    val locationInfo:State<LocationInformationState> =_locationInfo
+    private val _locationInfo = mutableStateOf(LocationInformationState())
+    val locationInfo: State<LocationInformationState> = _locationInfo
 
 
-    fun getLocationInformation(latlon:String){
-        getLocalInformationUseCase(latlon).onEach { result->
-            when(result){
-                is Resource.Loading->{
-                    _locationInfo.value=LocationInformationState(isLoading = true)
+    fun getLocationInformation(latlon: String) {
+        getLocalInformationUseCase(latlon).onEach { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    _locationInfo.value = LocationInformationState(isLoading = true)
                 }
-                is Resource.Success->{
-                    _locationInfo.value=LocationInformationState(localInformationModel =result.data )
+
+                is Resource.Success -> {
+                    _locationInfo.value =
+                        LocationInformationState(localInformationModel = result.data)
                 }
-                is Resource.Error->{
-                    _locationInfo.value= LocationInformationState(error = result.message?:"An unexpected error occured")
+
+                is Resource.Error -> {
+                    _locationInfo.value = LocationInformationState(
+                        error = result.message ?: "An unexpected error occured"
+                    )
                 }
             }
         }.launchIn(viewModelScope)
     }
-
 
     fun getWeatherForecast(latitude: Double, longitude: Double, exclude: String, apiKey: String) {
         getWeatherForecastUseCase(latitude, longitude, exclude, apiKey).onEach { result ->
@@ -74,9 +66,11 @@ class WeatherForecastViewModel @Inject constructor(
                 is Resource.Loading -> {
                     _state.value = WeatherForecastState(isLoading = true)
                 }
+
                 is Resource.Success -> {
                     _state.value = WeatherForecastState(weatherForecastModel = result.data)
                 }
+
                 is Resource.Error -> {
                     _state.value = WeatherForecastState(
                         error = result.message ?: "An unexpected error occured"
@@ -86,6 +80,7 @@ class WeatherForecastViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
     fun fetchLocation() {
         val context = getApplication<Application>().applicationContext
         if (ActivityCompat.checkSelfPermission(
@@ -103,7 +98,6 @@ class WeatherForecastViewModel @Inject constructor(
             _location.value = loc
         }
     }
-
 
 
 }

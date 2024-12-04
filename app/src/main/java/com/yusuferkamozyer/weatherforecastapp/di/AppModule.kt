@@ -10,7 +10,6 @@ import com.yusuferkamozyer.weatherforecastapp.data.local.LocationTracker
 import com.yusuferkamozyer.weatherforecastapp.data.remote.OpenCageGeocodingApi
 import com.yusuferkamozyer.weatherforecastapp.data.remote.OpenWeatherApi
 import com.yusuferkamozyer.weatherforecastapp.data.repository.WeatherForecastRepositoryImpl
-import com.yusuferkamozyer.weatherforecastapp.domain.repository.SettingsRepository
 import com.yusuferkamozyer.weatherforecastapp.domain.repository.WeatherForecastRepository
 import dagger.Module
 import dagger.Provides
@@ -34,7 +33,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGeocodingApi():OpenCageGeocodingApi{
+    fun provideGeocodingApi(): OpenCageGeocodingApi {
         return Retrofit.Builder().baseUrl(Constants.BASE_LOCAL_URL)
             .addConverterFactory(GsonConverterFactory.create()).build()
             .create(OpenCageGeocodingApi::class.java)
@@ -42,8 +41,11 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideWeatherForecastRepository(api: OpenWeatherApi,api_geo:OpenCageGeocodingApi): WeatherForecastRepository {
-        return WeatherForecastRepositoryImpl(api,api_geo)
+    fun provideWeatherForecastRepository(
+        api: OpenWeatherApi,
+        api_geo: OpenCageGeocodingApi,
+    ): WeatherForecastRepository {
+        return WeatherForecastRepositoryImpl(api, api_geo)
     }
 
 

@@ -1,5 +1,6 @@
 package com.yusuferkamozyer.weatherforecastapp.presentation.settings.view
 
+import SettingsScreenView
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
@@ -55,7 +56,6 @@ fun SettingsScreen(
                             color = Color.White,
                             fontFamily = Constants.fontFamily
                         )
-
                     }
                 },
                 navigationIcon = {
@@ -78,16 +78,10 @@ fun SettingsScreen(
         containerColor = AppColors.inversePrimaryLightMediumContrast
     ) { value ->
         Column(modifier = Modifier.padding(value)) {
-
+            SettingsScreenView()
         }
     }
 
-
-    /*val state=viewModel.settingsState.value
-    viewModel.updateTemperatureUnit(true)
-    LaunchedEffect (state){
-        println(state.isCelsius)
-    }*/
 
 
 }

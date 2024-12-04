@@ -11,7 +11,6 @@ interface WeatherForecastRepository {
         apiKey: String,
     ): WeatherForecastDTO
 
-    suspend fun getLocalInformation(latlon:String):LocalInformationDTO
-
+    suspend fun getLocalInformation(latlon: String): LocalInformationDTO
 
 }

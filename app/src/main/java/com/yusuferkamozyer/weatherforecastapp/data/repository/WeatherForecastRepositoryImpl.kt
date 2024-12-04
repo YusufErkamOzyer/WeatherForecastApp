@@ -24,4 +24,5 @@ class WeatherForecastRepositoryImpl @Inject constructor(
     override suspend fun getLocalInformation(latlon: String): LocalInformationDTO {
         return api_geo.getLocalName(latlon)
     }
+
 }
