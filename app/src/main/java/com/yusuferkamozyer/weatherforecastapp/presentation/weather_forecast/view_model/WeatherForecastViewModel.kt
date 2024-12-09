@@ -13,6 +13,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.yusuferkamozyer.weatherforecastapp.common.Resource
 import com.yusuferkamozyer.weatherforecastapp.domain.use_case.GetLocalInformationUseCase
 import com.yusuferkamozyer.weatherforecastapp.domain.use_case.GetWeatherForecastUseCase
+import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.ApiState
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.LocationInformationState
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.WeatherForecastState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,18 +40,17 @@ class WeatherForecastViewModel @Inject constructor(
     val locationInfo: State<LocationInformationState> = _locationInfo
 
 
+
     fun getLocationInformation(latlon: String) {
         getLocalInformationUseCase(latlon).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
                     _locationInfo.value = LocationInformationState(isLoading = true)
                 }
-
                 is Resource.Success -> {
                     _locationInfo.value =
                         LocationInformationState(localInformationModel = result.data)
                 }
-
                 is Resource.Error -> {
                     _locationInfo.value = LocationInformationState(
                         error = result.message ?: "An unexpected error occured"
@@ -75,7 +75,6 @@ class WeatherForecastViewModel @Inject constructor(
                     _state.value = WeatherForecastState(
                         error = result.message ?: "An unexpected error occured"
                     )
-                    println("hata alındı")
                 }
             }
         }.launchIn(viewModelScope)

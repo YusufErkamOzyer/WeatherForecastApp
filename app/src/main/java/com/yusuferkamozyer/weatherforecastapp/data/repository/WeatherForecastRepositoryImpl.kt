@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class WeatherForecastRepositoryImpl @Inject constructor(
     private val api: OpenWeatherApi,
-    private val api_geo: OpenCageGeocodingApi,
+    private val api_geo: OpenCageGeocodingApi
 ) :
     WeatherForecastRepository {
     override suspend fun getWeatherForecast(

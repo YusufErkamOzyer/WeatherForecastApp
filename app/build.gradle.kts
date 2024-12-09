@@ -1,14 +1,21 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("com.google.protobuf") version "0.9.4"
+    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.yusuferkamozyer.weatherforecastapp"
     compileSdk = 34
+    val file=rootProject.file("local.properties")
+    val properties= Properties()
+    properties.load(FileInputStream(file))
 
     defaultConfig {
         applicationId = "com.yusuferkamozyer.weatherforecastapp"
@@ -17,6 +24,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField("String","openweathermap_api_key",properties.getProperty("apikey_openweathermap"))
+        buildConfigField("String","opencage_api_key",properties.getProperty("apikey_opencage"))
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -41,6 +50,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig=true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -95,6 +105,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-text-google-fonts:1.7.3")
 
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+
 
 
 

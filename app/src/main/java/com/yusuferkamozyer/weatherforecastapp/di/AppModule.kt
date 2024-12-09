@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+
 import com.yusuferkamozyer.weatherforecastapp.common.Constants
 import com.yusuferkamozyer.weatherforecastapp.data.local.DefaultLocationTracker
 import com.yusuferkamozyer.weatherforecastapp.data.local.LocationTracker
@@ -39,11 +40,13 @@ class AppModule {
             .create(OpenCageGeocodingApi::class.java)
     }
 
+
     @Singleton
     @Provides
     fun provideWeatherForecastRepository(
         api: OpenWeatherApi,
-        api_geo: OpenCageGeocodingApi,
+        api_geo: OpenCageGeocodingApi
+
     ): WeatherForecastRepository {
         return WeatherForecastRepositoryImpl(api, api_geo)
     }

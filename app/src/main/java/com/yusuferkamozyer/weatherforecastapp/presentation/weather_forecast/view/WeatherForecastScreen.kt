@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -49,7 +48,7 @@ fun WeatherForecastScreen(
 ) {
     val locationInfo = viewModel.locationInfo.value
     val state = viewModel.state.value
-    val api_key = Constants.api_key
+    val api_key =Constants.api_key
     val location by viewModel.location.collectAsState()
     var isRefreshing by remember { mutableStateOf(false) }
     Scaffold(
@@ -85,9 +84,11 @@ fun WeatherForecastScreen(
         },
         containerColor = AppColors.inversePrimaryLightMediumContrast
     ) { values ->
+
         LaunchedEffect(Unit) {
             viewModel.fetchLocation()
         }
+
         LaunchedEffect(location) {
             location?.let {
                 viewModel.getWeatherForecast(it.latitude, it.longitude, "", api_key)
@@ -102,6 +103,7 @@ fun WeatherForecastScreen(
             }
             isRefreshing = false
         }
+
         state.weatherForecastModel?.let { weatherForecastModel ->
             locationInfo.localInformationModel?.let {
                 PullToRefreshWeatherColumn(
@@ -116,10 +118,10 @@ fun WeatherForecastScreen(
                 )
             }
         }
+
         if (locationInfo.error.isNotBlank()) {
             println(locationInfo.error)
         }
-
         if (state.error.isNotBlank()) {
             println(state.error)
         }

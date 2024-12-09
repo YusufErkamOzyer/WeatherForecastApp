@@ -3,13 +3,15 @@ package com.yusuferkamozyer.weatherforecastapp.common
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import com.yusuferkamozyer.weatherforecastapp.BuildConfig
 import com.yusuferkamozyer.weatherforecastapp.R
 
 object Constants {
-    const val api_key="2cac052e5fa8bf383bae4c6822477750"
+    const val api_key= BuildConfig.openweathermap_api_key
     const val BASE_URL ="https://api.openweathermap.org/"
     const val BASE_LOCAL_URL="https://api.opencagedata.com/"
-    const val api_local_key="65ded17bf9f842128f699befb3464d67"
+    const val api_local_key=BuildConfig.opencage_api_key
+    const val firebase_doc="my_apis"
 
 
     val fontFamily= FontFamily(

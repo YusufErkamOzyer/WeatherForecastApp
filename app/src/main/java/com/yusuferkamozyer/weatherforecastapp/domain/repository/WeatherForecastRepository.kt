@@ -12,5 +12,4 @@ interface WeatherForecastRepository {
     ): WeatherForecastDTO
 
     suspend fun getLocalInformation(latlon: String): LocalInformationDTO
-
 }

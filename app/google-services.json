@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "79043428969",
+    "project_id": "weatherforecastapplicati-8dbb2",
+    "storage_bucket": "weatherforecastapplicati-8dbb2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79043428969:android:0e194160ee7693a88b18f8",
+        "android_client_info": {
+          "package_name": "com.yusuferkamozyer.weatherforecastapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw9fpZNcfAdMedJWJAJBP1tM1l6rNPeZU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
