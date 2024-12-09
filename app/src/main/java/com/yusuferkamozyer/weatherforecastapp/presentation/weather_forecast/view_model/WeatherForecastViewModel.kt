@@ -13,7 +13,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.yusuferkamozyer.weatherforecastapp.common.Resource
 import com.yusuferkamozyer.weatherforecastapp.domain.use_case.GetLocalInformationUseCase
 import com.yusuferkamozyer.weatherforecastapp.domain.use_case.GetWeatherForecastUseCase
-import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.ApiState
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.LocationInformationState
 import com.yusuferkamozyer.weatherforecastapp.presentation.weather_forecast.WeatherForecastState
 import dagger.hilt.android.lifecycle.HiltViewModel
